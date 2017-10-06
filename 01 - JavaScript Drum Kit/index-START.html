@@ -59,6 +59,51 @@
 
 <script>
 
+    var app = {
+        audio: null,
+
+        initialize: function() {
+            window.addEventListener('keyup', (e) => {
+                const keyCode = e.keyCode
+
+                this.audio = document.querySelector(`audio[data-key="${keyCode}"]`);
+
+                //if no audio is found 
+                if(!this.audio) return;
+
+                this.addTransition(keyCode);
+                this.playSound(keyCode)                
+            }, false);
+
+            window.addEventListener('transitionend', this.removeTransition);
+
+        },
+
+        addTransition: function(keyCode) {
+            let key = document.querySelector(`.key[data-key="${keyCode}"]`)
+            key.classList.add('playing');
+        },
+
+        removeTransition: function() {
+            let keyList = document.querySelectorAll('.key');
+            keyList.forEach(function(key, val) {
+                key.classList.remove('playing');
+            });
+        },
+
+        playSound: function() {
+            //reset audio track before playing
+            this.audio.currentTime = 0;
+            this.audio.play();
+        }
+
+    };
+
+    (function(){
+        app.initialize();
+    })();
+
+
 </script>
 
 
