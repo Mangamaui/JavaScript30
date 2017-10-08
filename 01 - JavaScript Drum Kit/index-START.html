@@ -80,12 +80,12 @@
         },
 
         addTransition: function(keyCode) {
-            let key = document.querySelector(`.key[data-key="${keyCode}"]`)
+            const key = document.querySelector(`.key[data-key="${keyCode}"]`)
             key.classList.add('playing');
         },
 
         removeTransition: function() {
-            let keyList = document.querySelectorAll('.key');
+            const keyList = document.querySelectorAll('.key');
             keyList.forEach(function(key, val) {
                 key.classList.remove('playing');
             });
