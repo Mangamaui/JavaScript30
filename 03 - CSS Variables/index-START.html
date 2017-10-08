@@ -22,6 +22,22 @@
 
   <style>
 
+    :root {
+      --base: #ffaa22;
+      --blur: 0px;
+      --spacing: 10px;
+    }
+
+    img {
+      padding:  var(--spacing);
+      background-color: var(--base);
+      filter: blur( var(--blur));
+    }
+
+    span.hl {
+      color: var(--base);
+    }
+
     /*
       misc styles, nothing to do with CSS variables
     */
@@ -45,6 +61,26 @@
   </style>
 
   <script>
+    let app = {
+
+      initialize: function() {
+        const CONTROLS = document.querySelectorAll('.controls input');
+
+        CONTROLS.forEach(control => control.addEventListener('change', app.updateHandler));
+      },
+
+      updateHandler: function() {
+        const SIZING = this.dataset.sizing || '';
+        document.documentElement.style.setProperty(`--${this.name}`, this.value + SIZING);
+
+      }
+
+    };
+
+    (function(){
+      app.initialize();
+    })();
+
   </script>
 
 </body>
