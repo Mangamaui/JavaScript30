@@ -68,6 +68,74 @@
   </style>
 
   <script>
+    let app = {
+      date: null,
+      hourHand: null,
+      minHand: null,
+      secondHand: null,
+
+      initialize: function() {
+
+        //get all clockHands
+        this.hourHand = document.querySelector('.hour-hand');
+        this.minHand = document.querySelector('.min-hand');
+        this.secondHand = document.querySelector('.second-hand');
+
+        
+        //app.setTime();
+        setInterval(app.setTime, 1000);
+
+      },
+
+      setHours: function() {
+        const HOURS = this.date.getHours();
+        let hoursConverted = this.numberToPercentage(HOURS, 12);
+        hoursConverted = this.percentageToDegree(hoursConverted);
+
+        this.hourHand.style.transform = `rotate(${hoursConverted}deg)`;
+      },
+
+      setMinutes: function() {
+        const MINUTES = this.date.getMinutes();
+        let minutesConverted = this.numberToPercentage(MINUTES);
+        minutesConverted = this.percentageToDegree(minutesConverted);
+
+        this.minHand.style.transform = `rotate(${minutesConverted}deg)`;
+      },
+
+      setSeconds: function() {
+        const SECONDS = this.date.getSeconds();
+        let secondsConverted = this.numberToPercentage(SECONDS);
+        secondsConverted = this.percentageToDegree(secondsConverted);
+
+        this.secondHand.style.transform = `rotate(${secondsConverted}deg)`;
+      },
+
+      setTime: function() {
+        //set the date object
+        app.date = new Date();
+
+        app.setHours();
+        app.setMinutes();
+        app.setSeconds();
+      },
+
+      numberToPercentage: function(number = 0, max = 60) {
+        let percentage = (number / max);
+        return percentage;
+      },
+
+
+      percentageToDegree: function(percentage = 0) {
+        let degrees = (percentage * 360); 
+        return degrees;
+      }
+
+    };
+
+    (function(){
+      app.initialize();
+    })();
 
 
   </script>
