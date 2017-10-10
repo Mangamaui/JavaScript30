@@ -24,9 +24,15 @@
     .panels {
       min-height:100vh;
       overflow: hidden;
+      display: flex;
     }
 
     .panel {
+      flex-direction: column;
+      flex: 1;
+      justify-content: center;
+      align-items: center;
+      display: flex;
       background:#6B0F9C;
       box-shadow:inset 0 0 0 5px rgba(255,255,255,0.1);
       color:white;
@@ -50,7 +56,27 @@
     .panel4 { background-image:url(https://source.unsplash.com/ITjiVXcwVng/1500x1500); }
     .panel5 { background-image:url(https://source.unsplash.com/3MNzGlQM7qs/1500x1500); }
 
+    .panel > *:first-child {
+      transform: translateY(-100%);
+    }
+
+    .panel.active > *:first-child {
+      transform: translateY(0%);
+    }
+
+    .panel > *:last-child {
+      transform: translateY(100%);
+    }
+
+    .panel.active > *:last-child {
+      transform: translateY(0%);
+    }
+
     .panel > * {
+      display: flex;
+      flex: 1 0 auto;
+      justify-content: center;
+      align-items: center;
       margin:0;
       width: 100%;
       transition:transform 0.5s;
@@ -67,6 +93,7 @@
     }
 
     .panel.open {
+      flex: 5;
       font-size:40px;
     }
 
@@ -102,6 +129,36 @@
   </div>
 
   <script>
+
+    let app = {
+      panels: null,
+      
+      initialize: function() {
+        app.panels = document.querySelectorAll('.panel');
+        
+        app.panels.forEach(function(panel) {
+          panel.addEventListener('click', app.toggleOpen);
+
+          panel.addEventListener('transitionend', app.toggleActive);
+        });
+        
+      },
+
+      toggleOpen: function() {
+        this.classList.toggle('open');
+      },
+
+      toggleActive: function(event) {
+        if (event.propertyName.includes('flex')) {
+          this.classList.toggle('active');
+        }
+      }
+
+    };
+
+    (function(){
+      app.initialize();
+    })();
 
   </script>
 
