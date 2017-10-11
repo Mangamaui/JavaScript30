@@ -17,6 +17,60 @@
 <script>
 const endpoint = 'https://gist.githubusercontent.com/Miserlou/c5cd8364bf9b2420bb29/raw/2bf258763cdddd704f8ffd3ea9a3e81d25e2c6f6/cities.json';
 
+  let app = {
+    input: null,
+    data: null,
+    suggestions: null,
+    
+    initialize: function() {
+      this.input = document.querySelector('input');
+      this.suggestions = document.querySelector('.suggestions');
+
+      this.input.addEventListener('input', app.showMatches);
+
+      this.getJSON(); 
+    },
+
+    getJSON: function() {
+      fetch(endpoint).then(function(response) { 
+        return response.json();
+      }).then(function(obj) {
+        app.data =  obj; 
+      });
+    },
+
+    getMatches: function(query) {
+      const regex = new RegExp(query, 'gi');
+
+      return app.data.filter(function (place) {
+        return place.city.match(regex) || place.state.match(regex);
+      });
+
+    },
+
+    showMatches: function() {
+       const results = app.getMatches(this.value);
+       app.suggestions.innerHTML = '';
+
+       results.forEach(function(result) {
+
+          let listItem = document.createElement('li');
+          listItem.innerHTML = `<span class='place'> ${result.city}, ${result.state} </span>` +
+              `<span class='population'>${result.population}</span>`
+
+          app.suggestions.appendChild(listItem);  
+       });
+
+    }
+
+  };
+
+
+
+  (function(){
+    app.initialize();
+  })();
+
 </script>
   </body>
 </html>
