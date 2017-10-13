@@ -99,6 +99,75 @@
   </div>
 
 <script>
+  let app = {
+    firstItem: null,
+    lastItem: null,
+    shiftActive: false,
+    itemList: null,
+
+    initialize: function() {
+      this.itemList = Array.from(document.querySelectorAll('[type=checkbox]'));
+
+      window.addEventListener('keydown', (e) => {
+        if (e.keyCode == 16) app.shiftActive = true;
+      });
+
+      window.addEventListener('keyup', (e) => {
+        if (e.keyCode == 16) app.shiftActive = false;
+        console.log(e); 
+      });
+
+      window.addEventListener('click', (e) => {
+
+      });
+
+      this.itemList.forEach(function(item) {
+        item.addEventListener('change', (e) => {
+          if (e.target.checked && !app.firstItem) {
+            app.setItem(e.target, app.firstItem);
+          }
+
+          if (e.target.checked && app.shiftActive && app.firstItem) {
+            app.lastItem = e.target;
+          }
+
+          console.log(app.firstItem, app.lastItem);
+          
+
+        });
+      });
+
+      
+      console.log(this.itemList);
+    },
+
+    setItem: function(target, destination) {
+      let index = 0;
+
+      app.itemList.find(function(item) {
+        if (item === target) {
+          destination = index;
+        } else {
+          index++; 
+        };
+        
+      });
+    },
+
+    setItemsChecked: function() {
+      app.itemList.find(function(item) {
+        if (item === app.firstItem) {
+          let parent = item.parentNode;
+        }
+      });
+    }
+
+  };
+
+  (function() {
+    app.initialize();
+  })();
+
 </script>
 </body>
 </html>
