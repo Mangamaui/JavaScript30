@@ -102,64 +102,45 @@
   let app = {
     firstItem: null,
     lastItem: null,
-    shiftActive: false,
     itemList: null,
 
     initialize: function() {
-      this.itemList = Array.from(document.querySelectorAll('[type=checkbox]'));
-
-      window.addEventListener('keydown', (e) => {
-        if (e.keyCode == 16) app.shiftActive = true;
-      });
-
-      window.addEventListener('keyup', (e) => {
-        if (e.keyCode == 16) app.shiftActive = false;
-        console.log(e); 
-      });
-
-      window.addEventListener('click', (e) => {
-
-      });
+      this.itemList = document.querySelectorAll('[type=checkbox]');
 
       this.itemList.forEach(function(item) {
-        item.addEventListener('change', (e) => {
-          if (e.target.checked && !app.firstItem) {
-            app.setItem(e.target, app.firstItem);
-          }
-
-          if (e.target.checked && app.shiftActive && app.firstItem) {
-            app.lastItem = e.target;
-          }
-
-          console.log(app.firstItem, app.lastItem);
-          
-
-        });
+        item.addEventListener('click', app.setItem);
       });
-
-      
-      console.log(this.itemList);
     },
 
-    setItem: function(target, destination) {
-      let index = 0;
+    setItem: function(e) {
+      if (e.target.checked && (!app.firstItem || app.lastItem != null)) {
+          app.firstItem = this;
+      };
 
-      app.itemList.find(function(item) {
-        if (item === target) {
-          destination = index;
-        } else {
-          index++; 
-        };
-        
-      });
+      if ((e.target.checked && e.shiftKey) && app.firstItem) {
+          app.lastItem = this;
+          app.setItemsChecked();
+      }
+
     },
 
     setItemsChecked: function() {
-      app.itemList.find(function(item) {
-        if (item === app.firstItem) {
-          let parent = item.parentNode;
+      let next = false;
+
+      app.itemList.forEach(function(item) {
+        
+        if(item.checked) {
+          next = !next;
+        } else if (next) {
+          item.checked = true;
         }
+          
+
       });
+      
+
+      
+      
     }
 
   };
