@@ -7,6 +7,76 @@
 <body>
 <canvas id="draw" width="800" height="800"></canvas>
 <script>
+    let app = {
+        canvas: null,
+        context: null,
+        isDrawing: false,
+        xPos: 0,
+        yPos: 0,
+        hue: 0,
+        direction: true,
+
+        initialize:function() {
+            this.canvas = document.querySelector('#draw');
+            this.context = this.canvas.getContext('2d');
+
+            this.setBaseSettings();
+
+            this.canvas.addEventListener('mousemove', app.draw);
+            this.canvas.addEventListener('mouseup', () => app.isDrawing = false);
+            this.canvas.addEventListener('mouseout', () => app.isDrawing = false);
+
+            this.canvas.addEventListener('mousedown', function(e) {
+                app.isDrawing = true;
+                [app.xPos, app.yPos] = [e.offsetX, e.offsetY];
+            });
+        },
+
+        setBaseSettings: function() {
+            this.canvas.width = window.innerWidth;
+            this.canvas.height = window.innerHeight;
+
+            this.context.strokeStyle = '#AA22FF';
+            this.context.lineJoin = 'round';
+            this.context.lineCap = 'round';
+            this.context.lineWidth = 100;
+
+        },
+
+        draw: function(e) {
+            if(!app.isDrawing) return;
+
+            app.context.strokeStyle = `hsl(${app.hue}, 100%, 50%)`;
+            app.context.beginPath();
+            app.context.moveTo(app.xPos, app.yPos);
+            app.context.lineTo(e.offsetX, e.offsetY);
+            app.context.stroke();
+            [app.xPos, app.yPos] = [e.offsetX, e.offsetY];
+
+            app.randomize();
+            
+        },
+
+        randomize: function() {
+            app.hue = (app.hue +=1) % 360;
+
+            if (this.context.lineWidth >= 100 || this.context.lineWidth <= 10) {
+                app.direction = !app.direction;
+            }
+
+            if(app.direction) {
+                this.context.lineWidth++;
+            } else {
+                this.context.lineWidth--;
+            }
+        }
+
+    };
+
+    (function() {
+        app.initialize();
+    })();
+
 </script>
 
 <style>
