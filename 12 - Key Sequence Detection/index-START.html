@@ -7,6 +7,58 @@
 </head>
 <body>
 <script>
+
+  	const APP = {
+  		keySequence: [],
+  		konamiCode: [ 38, 38, 40, 40, 37, 39, 37, 39],
+
+  		initialize: function() {
+  			window.addEventListener('keyup', APP.addKeystroke);
+  		},
+
+  		addKeystroke: function(event) {
+  			APP.keySequence.push(event.keyCode);
+
+  			APP.checkKeySequenceLength();
+  		},
+
+  		checkKeySequenceLength: function() {
+  			if(APP.keySequence.length == APP.konamiCode.length) {
+  				APP.compareWithKonamiCode();
+  			} else if (APP.keySequence.length > APP.konamiCode.length) {
+  				const LENGTH = APP.keySequence.length - APP.konamiCode.length;
+  				console.log(LENGTH);
+  				APP.keySequence.splice(0, LENGTH);
+  				APP.compareWithKonamiCode();
+  			}
+  		},
+
+  		compareWithKonamiCode: function() {
+  			
+			let match = false;
+			for(let i=0;i < APP.keySequence.length; ++i) {
+				if(APP.keySequence[i] === APP.konamiCode[i]) {
+					match = true;
+				} else {
+					match = false;
+					break;
+				}
+			}
+
+			if(match == true) {
+				APP.cornify();
+			}
+ 
+  		},
+
+  		cornify: function(){
+  			cornify_add();
+  		}
+  	};
+
+  	(function(){
+  		APP.initialize();
+  	})();
 </script>
 </body>
 </html>
