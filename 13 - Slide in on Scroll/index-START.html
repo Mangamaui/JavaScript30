@@ -58,6 +58,53 @@
       };
     }
 
+    const APP = {
+      images: null,
+
+      initialize: function() {
+
+        this.images = Array.from(document.querySelectorAll("img"));
+    
+        window.addEventListener("scroll", APP.debounce(APP.detectWayPoint));
+        
+
+      },
+
+      debounce: function(func, wait = 20, immediate = true) {
+        let timeout;
+        return function() {
+          let context = this, args = arguments;
+          let later = function() {
+            timeout = null;
+            if (!immediate) func.apply(context, args);
+          };
+          let callNow = immediate && !timeout;
+          clearTimeout(timeout);
+          timeout = setTimeout(later, wait);
+          if (callNow) func.apply(context, args);
+        };
+      },
+
+      detectWayPoint: function() {
+        const currentPos = window.scrollY;
+
+        APP.images.forEach(function(image) {
+          const minPos = image.y - 400;
+          const maxPos = image.y;
+
+          if(currentPos > minPos && currentPos <= maxPos) {
+              image.classList.add("active");
+              return;
+          }
+        });
+      }
+
+    };
+
+    (function(){
+      APP.initialize();
+    })();
+
   </script>
 
   <style>
