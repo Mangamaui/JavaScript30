@@ -47,6 +47,54 @@
 const bands = ['The Plot in You', 'The Devil Wears Prada', 'Pierce the Veil', 'Norma Jean', 'The Bled', 'Say Anything', 'The Midway State', 'We Came as Romans', 'Counterparts', 'Oh, Sleeper', 'A Skylit Drive', 'Anywhere But Here', 'An Old Dog'];
 
 
+const APP = {
+    list: null,
+
+    initialize: function() {
+        this.list = document.querySelector('#bands');
+        const sortedBands = bands.sort(this.sortAlphabetically);
+
+        sortedBands.forEach(this.print);
+
+    },
+
+    sortAlphabetically: function(bandA, bandB) {
+        let regex = /^A(n)?\s|^The\s/g;
+
+        let nameA = bandA.replace(regex, '').toLowerCase();
+        let nameB = bandB.replace(regex, '').toLowerCase();
+
+        if (nameA < nameB) {
+        return -1;
+        }
+
+        if (nameA > nameB) {
+            return 1;
+        }
+
+        // names must be equal
+        return 0;
+    },
+
+    print: function(band) {
+        let li = document.createElement("li");
+        li.innerHTML = band;
+        APP.list.appendChild(li);
+    }
+
+};
+
+(function(){
+    APP.initialize();
+})();
+
+ 
+
+
+
+
+
+
 </script>
 
 </body>
