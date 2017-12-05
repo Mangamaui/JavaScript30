@@ -27,7 +27,47 @@
 
   <script>
     // 👀👀👀👀👀👀👀👀👀👀👀👀👀👀👀
+    const APP = {
+      anchors: null,
+      highlight: null,
+
+      initialize: function() {
+        APP.anchors = document.querySelectorAll('a');
+        APP.highlight = document.createElement('span');
+        APP.highlight.className = "highlight";
+
+        document.body.appendChild(APP.highlight);
+        this.addListeners();
+      },
+
+      addListeners: function() {
+        APP.anchors.forEach(function(anchor) {
+          anchor.addEventListener('mouseover', APP.moveHighlight);
+        })
+      },
+
+      moveHighlight: function(e) {
+        const target = e.target;
+        const rect = target.getBoundingClientRect();
+
+        const boundingBox = {
+          width: rect.width,
+          height: rect.height,
+          x: rect.x + window.scrollX,
+          y: rect.y + window.scrollY
+        }
+
+        APP.highlight.style.top = `${boundingBox.y}px`;
+        APP.highlight.style.left = `${boundingBox.x}px`;
+        APP.highlight.style.width = `${boundingBox.width}px`;
+        APP.highlight.style.height = `${boundingBox.height}px`;
+      }
+
+    };
+
+    (function() {
+        APP.initialize();
+    })();
   </script>
 </body>
 </html>
-
