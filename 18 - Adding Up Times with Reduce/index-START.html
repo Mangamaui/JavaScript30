@@ -182,6 +182,37 @@
     </li>
   </ul>
 <script>
+    const APP = {
+
+        initialize: function() {
+            const LIST = Array.from(document.querySelectorAll('[data-time]'));
+            const TOTALSECONDS = LIST.map(function(item) {
+                const [minutes, seconds] = item.dataset.time.split(':').map(parseFloat);
+
+                return (minutes * 60) + seconds;
+            }).reduce(function(total, vidTime){
+                return total += vidTime;
+
+            });
+
+            let leftovers = TOTALSECONDS;
+            const MINUTEBASE = 60;
+            const SECONDBASE = 60;
+
+            const HOURS = Math.floor(leftovers / (MINUTEBASE*SECONDBASE));
+            leftovers = (leftovers % (MINUTEBASE*SECONDBASE));
+
+            const MINUTES = Math.floor(leftovers / SECONDBASE);
+            leftovers = (leftovers % SECONDBASE);
+
+            console.log(`${HOURS}h ${MINUTES}m ${leftovers}s`);
+        }
+    };
+
+    (function(){
+        APP.initialize();
+    })();
+
 </script>
 </body>
 </html>
