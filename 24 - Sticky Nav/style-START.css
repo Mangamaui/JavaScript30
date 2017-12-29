@@ -84,3 +84,12 @@ nav a {
   transition:all 0.2s;
   text-transform: uppercase;
 }
+
+.nav--fixed {
+  position: fixed;
+  box-shadow: 0 5px 5px rgba(0,0,0,0.1);
+}
+
+.nav--fixed li.logo {
+  max-width: 400px;
+}

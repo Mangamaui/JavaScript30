@@ -54,6 +54,29 @@
   </div>
 
 <script>
+  const APP = {
+    nav: null,
+    offset: null,
+
+    initialize: function() {
+      APP.nav= document.querySelector('#main');
+      APP.offset = APP.nav.offsetTop;
+
+      window.addEventListener('scroll', APP.trigger);
+    },
+
+    trigger: function(e) { 
+      if (window.scrollY >= APP.offset) {
+        APP.nav.classList = "nav--fixed";
+      }
+    }
+
+  };
+
+  (function(){
+      APP.initialize();
+  })();
+
 
 </script>
 
